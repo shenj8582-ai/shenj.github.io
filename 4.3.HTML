@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>睿蓝X3 PRO - 国际版车型网站</title>
+    <style>
+        /* --- 基础样式 --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; }
+
+        /* --- 导航栏 --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.95);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .logo { font-size: 1.5rem; font-weight: bold; color: #2196F3; }
+        .nav-links { display: flex; gap: 25px; }
+        .nav-links a { padding: 8px 15px; border-radius: 20px; transition: all 0.3s; }
+        .nav-links a:hover { background: #e3f2fd; color: #1976D2; }
+
+        /* --- 页面区域 --- */
+        section { 
+            padding: 100px 5%; 
+            min-height: 100vh; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* --- 首页大图 --- */
+        #home {
+            height: 100vh;
+            background: url('bg.jpg') no-repeat center center/cover;
+            position: relative;
+            color: white;
+            text-align: center;
+        }
+        #home::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.4);
+        }
+        #home > div {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .hero-text {
+            animation: slideUp 1s ease-out;
+            margin-bottom: 30px;
+        }
+        .hero-text h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        .hero-text p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        .btn {
+            background: #2196F3;
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(33, 150, 243, 0.4);
+        }
+        .btn:hover {
+            background: #1976D2;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(33, 150, 243, 0.6);
+        }
+
+        /* --- 车型展示 --- */
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #212121;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 50px;
+            font-size: 1.1rem;
+        }
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        .model-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: fadeInUp 0.6s ease-out;
+        }
+        .model-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        .model-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        .model-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .model-card:hover .model-img img {
+            transform: scale(1.1);
+        }
+        .model-info {
+            padding: 20px;
+            text-align: center;
+        }
+        .model-info h3 {
+            margin: 10px 0;
+            color: #212121;
+        }
+        .model-tag {
+            background: #E3F2FD;
+            color: #1976D2;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        .model-desc {
+            color: #666;
+            margin: 15px 0;
+        }
+
+        /* --- 图片展示区 --- */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .gallery-item {
+            height: 250px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            cursor: pointer;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        /* --- 价格表格修复样式 --- */
+        .price-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: blank;
+        }
+        .price-section .section-title,
+        .price-section .subtitle {
+            color: white;
+        }
+        .price-table {
+            width: 100%;
+            max-width: 1000px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .price-table th, .price-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        .price-table th {
+            background: #f5f5f5;
+            font-weight: bold;
+             color: #212121; /* ✅ 关键修复：深灰色文字，不是白色！ */
+            border-bottom: 2px solid #e0e0e0;
+        }
+        .price-table tr:nth-child(even) {
+            background-color: #fafafa;
+        }
+        .price-highlight {
+            font-weight: bold;
+            color: #d32f2f; /* 红色高亮 */
+            font-size: 1.1em;
+        }
+
+        /* --- 动画效果 --- */
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes fadeInUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .float-element {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* --- 响应式 --- */
+        @media (max-width: 768px) {
+            .hero-text h1 { font-size: 2.5rem; }
+            .nav-links { gap: 15px; }
+            .models-grid, .gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="logo">睿蓝汽车</div>
+        <div class="nav-links">
+            <a href="#home">首页</a>
+            <a href="#models">车型</a>
+            <a href="#gallery">图片</a>
+            <a href="#price">价格</a>
+            <a href="#contact">联系</a>
+        </div>
+    </nav>
+
+    <!-- 首页大图 -->
+    <section id="home">
+        <div>
+            <div class="hero-text">
+                <h1>睿蓝 X3 PRO</h1>
+                <p>定义你的出行美学 · 远销全球的精品小型SUV</p>
+                <button class="btn" onclick="document.getElementById('models').scrollIntoView()">了解更多</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 车型展示 -->
+    <section id="models">
+        <h2 class="section-title">精选车型</h2>
+        <p class="subtitle">三种配置，满足不同需求</p>
+        
+        <div class="models-grid">
+            <div class="model-card">
+                <div class="model-img">
+                    <img src="car1.jpg" alt="手动挡无天窗">
+                </div>
+                <div class="model-info">
+                    <h3>1.5L 手动挡</h3>
+                    <div class="model-tag">无天窗版</div>
+                    <p class="model-desc">经济实用，驾驶乐趣十足</p>
+                </div>
+            </div>
+
+            <div class="model-card">
+                <div class="model-img">
+                    <img src="car2.jpg" alt="手动挡带天窗">
+                </div>
+                <div class="model-info">
+                    <h3>1.5L 手动挡</h3>
+                    <div class="model-tag">带天窗版</div>
+                    <p class="model-desc">视野开阔，享受阳光</p>
+                </div>
+            </div>
+
+            <div class="model-card">
+                <div class="model-img">
+                    <img src="car3.jpg" alt="自动挡带天窗">
+                </div>
+                <div class="model-info">
+                    <h3>1.5L CVT 自动挡</h3>
+                    <div class="model-tag">带天窗版</div>
+                    <p class="model-desc">城市代步神器，平顺省油</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 图片展示 -->
+    <section id="gallery" style="background: #fff;">
+        <h2 class="section-title">精彩图集</h2>
+        <p class="subtitle">更多细节，尽显品质</p>
+        
+        <div class="gallery">
+            <div class="gallery-item">
+                <img src="car4.jpg" alt="内饰图">
+                <div class="gallery-overlay">精致内饰</div>
+            </div>
+            <div class="gallery-item">
+                <img src="car5.jpg" alt="侧面图">
+                <div class="gallery-overlay">流线造型</div>
+            </div>
+            <div class="gallery-item">
+                <img src="car6.jpg" alt="细节图">
+                <div class="gallery-overlay">工艺细节</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 价格表 - 已修复文字颜色 -->
+    <section id="price" class="price-section">
+        <h2 class="section-title">车型价格</h2>
+        <p class="subtitle">EXW & FOB 价格表 (单位: RMB)</p>
+        
+        <table class="price-table">
+            <thead>
+                <tr>
+                    <th>车型配置</th>
+                    <th>颜色</th>
+                    <th>EXW 重庆 (RMB)</th>
+                    <th>FOB 南沙 (RMB)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>1.5L 手动挡带天窗</td><td>灰色/白色</td><td class="price-highlight">¥44,500</td><td class="price-highlight">¥49,500</td></tr>
+                <tr><td>1.5L 手动挡带天窗</td><td>黑色/银色</td><td class="price-highlight">¥44,700</td><td class="price-highlight">¥49,700</td></tr>
+                <tr><td>1.5L 手动挡带天窗</td><td>双拼色</td><td class="price-highlight">¥46,500</td><td class="price-highlight">¥51,500</td></tr>
+                
+                <tr><td>1.5L 手动挡无天窗</td><td>灰色/白色</td><td class="price-highlight">¥43,500</td><td class="price-highlight">¥48,500</td></tr>
+                <tr><td>1.5L 手动挡无天窗</td><td>黑色/银色</td><td class="price-highlight">¥43,700</td><td class="price-highlight">¥48,700</td></tr>
+                <tr><td>1.5L 手动挡无天窗</td><td>双拼色</td><td class="price-highlight">¥45,500</td><td class="price-highlight">¥50,500</td></tr>
+                
+                <tr><td>1.5L CVT 自动挡带天窗</td><td>灰色/白色</td><td class="price-highlight">¥49,500</td><td class="price-highlight">¥54,500</td></tr>
+                <tr><td>1.5L CVT 自动挡带天窗</td><td>黑色/银色</td><td class="price-highlight">¥49,700</td><td class="price-highlight">¥54,700</td></tr>
+                <tr><td>1.5L CVT 自动挡带天窗</td><td>双拼色</td><td class="price-highlight">¥51,500</td><td class="price-highlight">¥56,500</td></tr>
+            </tbody>
+        </table>
+        
+        <div style="max-width: 1000px; margin: 30px auto; padding: 20px; background: rgba(255,255,255,0.1); border-radius: 15px; text-align: left; color: white;">
+            <h3 style="color: #8ab4f8; margin-top: 0;">价格说明:</h3>
+            <ul style="padding-left: 20px; color: #e0e0e0;">
+                <li><strong>EXW (Ex Works)</strong>: 工厂交货价，重庆工厂提货</li>
+                <li><strong>FOB (Free On Board)</strong>: 离岸价 = EXW价格 + ¥5,000</li>
+                <li><strong>颜色附加费</strong>: 黑色/银色 + ¥200 | 双拼色 + ¥2,000</li>
+                <li>以上价格为单车基础报价，批量采购可享优惠</li>
+                <li>具体价格请以正式合同为准</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- 联系我们 -->
+    <section id="contact" style="background: #fff;">
+        <h2 class="section-title">联系我们</h2>
+        <p class="subtitle">欢迎咨询购车或代理事宜</p>
+        <div style="text-align: center; margin-top: 50px;">
+            <button class="btn" style="background: #4CAF50; margin: 10px;" onclick="alert('WhatsApp: +86-xxx-xxxx-xxxx')">
+                💬 WhatsApp 咨询：沈+86 199 2385 4995  顾+86 1911281 6914
+            </button>
+            <button class="btn" style="background: #FF5722; margin: 10px;" onclick="alert('抖音: @ruilan_auto')">
+                🎵 抖音关注：YHJL2023（非官方，个人SOHO）
+            </button>
+        </div>
+    </section>
+
+</body>
+</html>
